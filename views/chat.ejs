@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/jquery.min.js"></script>
+    <style>
+        body{
+            background: #cccccc;
+        }
+        .content{
+            height: 50vh;
+            background: #fff;
+            overflow-y: scroll;
+            padding: 1em;
+        }
+        .content li{
+            list-style: none;
+            line-height: 1.5;
+        }
+        .content .title{
+            color:blue;
+        }
+        .content .item{
+            text-indent: 1em;
+        }
+        .content p{
+            margin: 0;
+        }
+        .content time{
+            padding-left: 1em;
+        }
+        .wrong{
+            color: red;
+        }
+        textarea{
+            width: 100%;
+            margin-top: 15px;
+            box-sizing: border-box;
+            padding: 0.5em;
+        }
+    </style>
+</head>
+<body>
+<h1 class="name"><%= name %></h1>
+<ul class="content">
+
+</ul>
+<textarea rows="5"></textarea>
+<button>发送</button>
+<span class="wrong"></span>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    var d = new Date();
+    var time =  d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+    $('textarea').keydown(function (e) {
+        if(e.keyCode == 13){
+            if($.trim($('textarea').val())==""){
+                showErr();
+                return false;
+            };
+            socket.emit('content',{
+                'content' : $(this).val(),
+                'name' : $('.name').text(),
+                'time' : time,
+            });
+            $(this).val('');
+        }
+    });
+    $('button').click(function () {
+        if($.trim($('textarea').val())==""){
+            showErr();
+            return false;
+        };
+        socket.emit('content',{
+            'content' : $('textarea').val(),
+            'name' : $('.name').text()
+        });
+        $('textarea').val('');
+    });
+
+    socket.on('content',function (msg) {
+        var html = '<li><p class="title"><b>' + msg.name + '</b><time>'+ time + '</time><p><p class="item">' + msg.content + '</p></li>';
+        $('.content').append(html);
+        $('.content').scrollTop( $('.content')[0].scrollHeight);
+    });
+
+    function showErr() {
+        $('.wrong').text('发送内容不能为空');
+        setTimeout(function () {
+            $('.wrong').text('')
+        },1000)
+    }
+</script>
+
+</body>
+</html>

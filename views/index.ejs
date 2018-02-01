@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="/js/jquery.min.js"></script>
+    <style>
+        body{
+            background: #eee;
+        }
+        .main{
+            background: #fff;
+            display: inline-block;
+            padding: 20px 50px 50px;
+            text-align: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+        h1{
+            border-bottom: 1px dashed #eee;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <h1>请登录</h1>
+    <form action="/login" method="get">
+        <!--<label for="name">昵称：</label>-->
+        <input type="text" name="name" id="name" placeholder="昵称">
+        <input type="submit" value="进入聊天室">
+    </form>
+</div>
+
+
+
+</body>
+</html>
